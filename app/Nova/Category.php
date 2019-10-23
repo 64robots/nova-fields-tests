@@ -2,30 +2,28 @@
 
 namespace App\Nova;
 
-use App\Nova\Actions\RowFieldAction;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 // nova-field Fields
-use R64\NovaFields\BelongsTo;
 use R64\NovaFields\Text;
 
-class Post extends Resource
+class Category extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = 'App\Post';
+    public static $model = 'App\Category';
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'name';
 
     /**
      * The columns that should be searched.
@@ -47,9 +45,7 @@ class Post extends Resource
         return [
             ID::make()->sortable(),
 
-            Text::make('Title'),
-
-            BelongsTo::make('Category'),
+            Text::make('Name'),
         ];
     }
 
@@ -94,6 +90,6 @@ class Post extends Resource
      */
     public function actions(Request $request)
     {
-        return [new RowFieldAction];
+        return [];
     }
 }
