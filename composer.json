@@ -12,7 +12,7 @@
         "64robots/nova-fields": "^0.12.0",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "^6.2",
-        "laravel/nova": "~2.5",
+        "laravel/nova": "~2.7",
         "laravel/tinker": "^1.0"
     },
     "require-dev": {

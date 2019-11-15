@@ -10,6 +10,10 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 // nova-field Fields
 use R64\NovaFields\BelongsTo;
 use R64\NovaFields\Text;
+use R64\NovaFields\JSON;
+use R64\NovaFields\Autocomplete;
+use R64\NovaFields\Number;
+use R64\NovaFields\Row;
 
 class Post extends Resource
 {
@@ -49,7 +53,32 @@ class Post extends Resource
 
             Text::make('Title'),
 
-            BelongsTo::make('Category'),
+            BelongsTo::make('Category')->quickCreate(),
+
+            Row::make('Products', [
+                Text::make('Name'),
+                Number::make('Quantity'),
+                Number::make('Price'),
+            ])->fillUsing(function ($request, $model) {
+                $model->products = json_encode($request->products);
+            }),
+
+            // Json::make('Testing', [
+            //     Autocomplete::make('Variable Type')
+            //         ->options([
+            //             'user' => 'User',
+            //             'admin' => 'Admin'
+            //         ])
+            //         ->displayUsingLabels()
+            //         ->onlyOnForms(),
+
+            //     Autocomplete::make('Variable Id')
+            //         ->options([])
+            //         ->displayUsingLabels()
+            //         ->computeOptionsUsing(function ($fields) {
+            //             return ['pepe' => 'Pepe', 'antonio' => 'Antonio'];
+            //         }),
+            // ])
         ];
     }
 
