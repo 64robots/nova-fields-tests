@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use App\Nova\Actions\RowFieldAction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -14,6 +15,7 @@ use R64\NovaFields\JSON;
 use R64\NovaFields\Autocomplete;
 use R64\NovaFields\Number;
 use R64\NovaFields\Row;
+use R64\NovaFields\File;
 
 class Post extends Resource
 {
@@ -55,13 +57,32 @@ class Post extends Resource
 
             BelongsTo::make('Category')->quickCreate(),
 
+            File::make('File')
+                      ->draggable()
+                      ->disk('public')
+                      ->previewBeforeUpload()
+                      ->addFieldClasses('w-full'),
+
             Row::make('Products', [
-                Text::make('Name'),
-                Number::make('Quantity'),
-                Number::make('Price'),
-            ])->fillUsing(function ($request, $model) {
-                $model->products = json_encode($request->products);
-            }),
+                Text::make('Replace This', 'search')->rules('required'),
+                Text::make('With This', 'replace')->rules('required'),
+            ], 'products')->childConfig([
+                'fieldClasses' => 'w-full px-8 py-6',
+                'hideLabelInForms' => true,
+            ])
+            ->hideHeadingWhenEmpty()
+            // ->fillUsing(function ($request, $model) {
+            //     $model->products = json_encode($request->products);
+            // })
+            ->addRowText('Add Product'),
+
+            // Row::make('Products', [
+            //     Text::make('Name'),
+            //     Number::make('Quantity'),
+            //     Number::make('Price'),
+            // ])->fillUsing(function ($request, $model) {
+            //     $model->products = json_encode($request->products);
+            // }),
 
             // Json::make('Testing', [
             //     Autocomplete::make('Variable Type')
