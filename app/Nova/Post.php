@@ -11,7 +11,9 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 // nova-field Fields
 use R64\NovaFields\BelongsTo;
+use R64\NovaFields\DateTime;
 use R64\NovaFields\Text;
+// use R64\NovaFields\Number;
 use R64\NovaFields\JSON;
 use R64\NovaFields\Autocomplete;
 // use R64\NovaFields\Number;
@@ -55,6 +57,7 @@ class Post extends Resource
             ID::make()->sortable(),
 
             Text::make('Title'),
+            DateTime::make('Created At')->hideTimezone(),
 
             BelongsTo::make('Category')->quickCreate(),
 
@@ -73,12 +76,6 @@ class Post extends Resource
                 $model->products = json_encode($request->products);
             })->sum('price'),
 
-            JSON::make('Extras', [
-                new Panel('This should be first', [
-                    Text::make('should be first')
-                ]),
-                Text::make('should be second'),
-            ]),
 
             // Json::make('Testing', [
             //     Autocomplete::make('Variable Type')
